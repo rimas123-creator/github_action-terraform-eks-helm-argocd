@@ -32,12 +32,17 @@ jobs:
     runs-on: ubuntu-latest
     environment: production
 
+    defaults:
+      run:
+        shell: bash
+        working-directory: terraform-eks
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
       - name: List the repository contents
-        run: ls -alth /home/runner/work/github_action-terraform-eks-helm-argocd/
+        run: ls -alth
 
   Setting-Up-Terraform:
     runs-on: ubuntu-latest
@@ -62,7 +67,6 @@ jobs:
           ls -alth
 
       - name: Terraform Init
-        working-directory: /home/runner/work/github_action-terraform-eks-helm-argocd/github_action-terraform-eks-helm-argocd/terraform-eks # Change this path accordingly
         run: terraform init
 
   Terraform-Action:
@@ -72,21 +76,17 @@ jobs:
     steps:
       - name: Terraform Plan
         if: ${{ github.event.inputs.action == 'plan' }}
-        working-directory: /home/runner/work/github_action-terraform-eks-helm-argocd/github_action-terraform-eks-helm-argocd/terraform-eks # Change this path accordingly
         run: |
           terraform plan -var-file=${{ github.event.inputs.tfvars_file }} -input=false
       
       - name: Terraform Validate
         if: ${{ github.event.inputs.action == 'validate' }}
-        working-directory: /home/runner/work/github_action-terraform-eks-helm-argocd/github_action-terraform-eks-helm-argocd/terraform-eks # Change this path accordingly
         run: terraform validate
 
       - name: Terraform Apply
         if: ${{ github.event.inputs.action == 'apply' }}
-        working-directory: /home/runner/work/github_action-terraform-eks-helm-argocd/github_action-terraform-eks-helm-argocd/terraform-eks # Change this path accordingly
         run: terraform apply -auto-approve -var-file=${{ github.event.inputs.tfvars_file }} -input=false
 
       - name: Terraform Destroy
         if: ${{ github.event.inputs.action == 'destroy' }}
-        working-directory: /home/runner/work/github_action-terraform-eks-helm-argocd/github_action-terraform-eks-helm-argocd/terraform-eks # Change this path accordingly
         run: terraform destroy -auto-approve -var-file=${{ github.event.inputs.tfvars_file }} -input=false
