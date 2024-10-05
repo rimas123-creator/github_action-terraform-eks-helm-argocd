@@ -60,8 +60,8 @@ jobs:
 
     steps:
       - name: List the working-directory
-        run: ls -alth
-        
+        run: ls -alth && pwd
+
       - name: Terraform Init
         working-directory: terraform-eks
         run: terraform init
