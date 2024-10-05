@@ -1,7 +1,7 @@
-name: 'Terraform'             # workflow name
+name: 'Terraform'             # Workflow name
 
-on:                           # trigger
-  workflow_dispatch:          # manual trigger by user input
+on:                           # Trigger
+  workflow_dispatch:          # Manual trigger by user input
     inputs:
       tfvars_file:
         description: 'Path to the .tfvars file'
@@ -32,16 +32,11 @@ jobs:
     runs-on: ubuntu-latest
     environment: production
 
-    defaults:
-      run:
-        shell: bash
-        working-directory: terraform-eks
-
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      
-      - name: List the working-directory
+
+      - name: List the repository contents
         run: ls -alth
 
   Setting-Up-Terraform:
@@ -59,11 +54,12 @@ jobs:
     needs: Setting-Up-Terraform
 
     steps:
-      - name: List the working-directory
-        run: ls -alth && pwd
+      - name: List the working directory and confirm path
+        run: |
+          ls -alth && pwd
 
       - name: Terraform Init
-        working-directory: terraform-eks
+        working-directory: terraform-eks  # This is your confirmed correct path
         run: terraform init
 
   Terraform-Action:
@@ -73,22 +69,21 @@ jobs:
     steps:
       - name: Terraform Plan
         if: ${{ github.event.inputs.action == 'plan' }}
-        working-directory: terraform-eks
+        working-directory: terraform-eks  # Confirmed correct path
         run: |
           terraform plan -var-file=${{ github.event.inputs.tfvars_file }} -input=false
       
       - name: Terraform Validate
         if: ${{ github.event.inputs.action == 'validate' }}
-        working-directory: terraform-eks
-        run: |
-          terraform validate
+        working-directory: terraform-eks  # Confirmed correct path
+        run: terraform validate
 
       - name: Terraform Apply
         if: ${{ github.event.inputs.action == 'apply' }}
-        working-directory: terraform-eks
+        working-directory: terraform-eks  # Confirmed correct path
         run: terraform apply -auto-approve -var-file=${{ github.event.inputs.tfvars_file }} -input=false
 
       - name: Terraform Destroy
         if: ${{ github.event.inputs.action == 'destroy' }}
-        working-directory: terraform-eks
+        working-directory: terraform-eks  # Confirmed correct path
         run: terraform destroy -auto-approve -var-file=${{ github.event.inputs.tfvars_file }} -input=false
