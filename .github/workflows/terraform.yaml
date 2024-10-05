@@ -59,6 +59,9 @@ jobs:
     needs: Setting-Up-Terraform
 
     steps:
+      - name: List the working-directory
+        run: ls -alth
+        
       - name: Terraform Init
         working-directory: terraform-eks
         run: terraform init
