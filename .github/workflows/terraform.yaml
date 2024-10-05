@@ -37,7 +37,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: List the repository contents
-        run: ls -alth
+        run: ls -alth /home/runner/work/github_action-terraform-eks-helm-argocd/
 
   Setting-Up-Terraform:
     runs-on: ubuntu-latest
@@ -56,10 +56,13 @@ jobs:
     steps:
       - name: List the working directory and confirm path
         run: |
-          ls -alth && pwd
+          echo "Current directory:"
+          pwd
+          echo "Listing contents of the current directory:"
+          ls -alth
 
       - name: Terraform Init
-        working-directory: /home/runner/work/github_action-terraform-eks-helm-argocd/terraform-eks  # Use the absolute path here
+        working-directory: /home/runner/work/github_action-terraform-eks-helm-argocd/github_action-terraform-eks-helm-argocd/terraform-eks # Change this path accordingly
         run: terraform init
 
   Terraform-Action:
@@ -69,21 +72,21 @@ jobs:
     steps:
       - name: Terraform Plan
         if: ${{ github.event.inputs.action == 'plan' }}
-        working-directory: /home/runner/work/github_action-terraform-eks-helm-argocd/terraform-eks  # Use the absolute path here
+        working-directory: /home/runner/work/github_action-terraform-eks-helm-argocd/github_action-terraform-eks-helm-argocd/terraform-eks # Change this path accordingly
         run: |
           terraform plan -var-file=${{ github.event.inputs.tfvars_file }} -input=false
       
       - name: Terraform Validate
         if: ${{ github.event.inputs.action == 'validate' }}
-        working-directory: /home/runner/work/github_action-terraform-eks-helm-argocd/terraform-eks  # Use the absolute path here
+        working-directory: /home/runner/work/github_action-terraform-eks-helm-argocd/github_action-terraform-eks-helm-argocd/terraform-eks # Change this path accordingly
         run: terraform validate
 
       - name: Terraform Apply
         if: ${{ github.event.inputs.action == 'apply' }}
-        working-directory: /home/runner/work/github_action-terraform-eks-helm-argocd/terraform-eks  # Use the absolute path here
+        working-directory: /home/runner/work/github_action-terraform-eks-helm-argocd/github_action-terraform-eks-helm-argocd/terraform-eks # Change this path accordingly
         run: terraform apply -auto-approve -var-file=${{ github.event.inputs.tfvars_file }} -input=false
 
       - name: Terraform Destroy
         if: ${{ github.event.inputs.action == 'destroy' }}
-        working-directory: /home/runner/work/github_action-terraform-eks-helm-argocd/terraform-eks  # Use the absolute path here
+        working-directory: /home/runner/work/github_action-terraform-eks-helm-argocd/github_action-terraform-eks-helm-argocd/terraform-eks # Change this path accordingly
         run: terraform destroy -auto-approve -var-file=${{ github.event.inputs.tfvars_file }} -input=false
