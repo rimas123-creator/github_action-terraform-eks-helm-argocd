@@ -40,6 +40,9 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+      
+      - name: List the working-directory
+        run: ls -alth
 
   Setting-Up-Terraform:
     runs-on: ubuntu-latest
