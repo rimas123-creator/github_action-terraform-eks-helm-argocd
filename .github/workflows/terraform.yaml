@@ -60,6 +60,7 @@ jobs:
 
     steps:
       - name: Terraform Init
+        working-directory: terraform-eks
         run: terraform init
 
   Terraform-Action:
@@ -69,18 +70,22 @@ jobs:
     steps:
       - name: Terraform Plan
         if: ${{ github.event.inputs.action == 'plan' }}
+        working-directory: terraform-eks
         run: |
           terraform plan -var-file=${{ github.event.inputs.tfvars_file }} -input=false
       
       - name: Terraform Validate
         if: ${{ github.event.inputs.action == 'validate' }}
+        working-directory: terraform-eks
         run: |
           terraform validate
 
       - name: Terraform Apply
         if: ${{ github.event.inputs.action == 'apply' }}
+        working-directory: terraform-eks
         run: terraform apply -auto-approve -var-file=${{ github.event.inputs.tfvars_file }} -input=false
 
       - name: Terraform Destroy
         if: ${{ github.event.inputs.action == 'destroy' }}
+        working-directory: terraform-eks
         run: terraform destroy -auto-approve -var-file=${{ github.event.inputs.tfvars_file }} -input=false
