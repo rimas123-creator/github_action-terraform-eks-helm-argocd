@@ -16,6 +16,6 @@ spec:
     spec:
       containers:
       - name: my-node-app
-        image: caderrimas/reactapp-helm-argocd:v1
+        image: caderrimas/nodeapp-helm-argocd:v1
         ports:
         - containerPort: 3001
