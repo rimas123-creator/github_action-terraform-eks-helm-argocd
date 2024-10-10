@@ -17,10 +17,10 @@ module "eks" {
     eks_managed_node_groups = {
         dev = {
             min_size = 1
-            max_size = 3
-            desired_size = 2
+            max_size = 1
+            desired_size = 1
 
-            instance_types = ["t2.small"]
+            instance_types = ["t3.small"]
         }
     }
 }
